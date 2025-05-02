@@ -6,6 +6,7 @@ import os
 import argparse
 import sys
 from pathlib import Path
+from typing import List, Optional
 
 # Add the project directory to the sys.path
 project_dir = Path(__file__).resolve().parent
@@ -13,6 +14,8 @@ sys.path.insert(0, str(project_dir))
 
 from app.utils.logging import log
 from app.config.settings import settings
+from app.document_processing.processor import document_processor
+from app.core.interfaces import RagDocument
 
 
 def parse_args():
@@ -26,6 +29,9 @@ def parse_args():
     ingest_parser = subparsers.add_parser("ingest", help="Ingest documents into the system")
     ingest_parser.add_argument("--source", "-s", required=True, help="Source file or directory to ingest")
     ingest_parser.add_argument("--recursive", "-r", action="store_true", help="Recursively ingest directories")
+    ingest_parser.add_argument("--chunk-size", type=int, help=f"Chunk size (default: {settings.DOCUMENT.CHUNK_SIZE})")
+    ingest_parser.add_argument("--chunk-overlap", type=int, help=f"Chunk overlap (default: {settings.DOCUMENT.CHUNK_OVERLAP})")
+    ingest_parser.add_argument("--splitter", help="Text splitter to use (RecursiveSemanticSplitter, SemanticTextSplitter, CharacterTextSplitter)")
     
     # Query command
     query_parser = subparsers.add_parser("query", help="Query the system")
@@ -39,11 +45,48 @@ def parse_args():
     return parser.parse_args()
 
 
-def ingest_documents(source: str, recursive: bool = False):
-    """Ingest documents into the system."""
+def ingest_documents(
+    source: str,
+    recursive: bool = False,
+    chunk_size: Optional[int] = None,
+    chunk_overlap: Optional[int] = None,
+    splitter: Optional[str] = None,
+) -> List[RagDocument]:
+    """
+    Ingest documents into the system.
+    
+    Args:
+        source: Source file or directory to ingest.
+        recursive: Whether to recursively ingest directories.
+        chunk_size: Chunk size to use.
+        chunk_overlap: Chunk overlap to use.
+        splitter: Text splitter to use.
+        
+    Returns:
+        List of processed documents.
+    """
     log.info(f"Ingesting documents from {source} (recursive: {recursive})")
-    # TODO: Implement document ingestion
-    log.info("Document ingestion is not yet implemented")
+    
+    try:
+        # Process documents
+        documents = document_processor.process_document(
+            source=source,
+            splitter_name=splitter,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            recursive=recursive,
+        )
+        
+        log.info(f"Successfully ingested {len(documents)} document chunks")
+        
+        # TODO: Add vector storage integration
+        log.warning("Vector storage integration is not yet implemented - documents are not being saved")
+        
+        return documents
+    
+    except Exception as e:
+        log.error(f"Error ingesting documents: {e}")
+        return []
 
 
 def query_system(query: str):
@@ -75,7 +118,13 @@ def main():
     log.info(f"Environment: {settings.ENVIRONMENT}")
     
     if args.command == "ingest":
-        ingest_documents(args.source, args.recursive)
+        ingest_documents(
+            source=args.source,
+            recursive=args.recursive,
+            chunk_size=args.chunk_size,
+            chunk_overlap=args.chunk_overlap,
+            splitter=args.splitter,
+        )
     elif args.command == "query":
         query_system(args.query)
     elif args.command == "server":
