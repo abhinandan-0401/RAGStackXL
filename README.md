@@ -15,21 +15,52 @@ Key features:
 - Comprehensive evaluation framework
 - Clean architecture with dependency injection
 
+## Project Status
+
+### Completed Phases:
+
+#### Phase 1: Project Setup ✓
+- Established project structure with modular components
+- Set up configuration system using Pydantic
+- Implemented logging with Loguru
+- Created core interfaces and abstract classes
+- Set up basic CLI application entry point
+
+#### Phase 2: Document Processing ✓
+- Implemented document loaders for multiple formats:
+  - Plain text (TXT)
+  - PDF documents
+  - Microsoft Word (DOCX)
+  - HTML files
+  - Markdown content
+- Created a loader registry system for format discovery
+- Implemented multiple text chunking strategies:
+  - Character-based chunking
+  - Semantic chunking (preserving document structure)
+  - Recursive chunking (hierarchical approach)
+- Built a unified document processor combining loading and chunking
+- Added comprehensive unit tests with good coverage
+
+### In Progress:
+- Phase 3: Embedding and Vectorization
+- Implementing embedding models and vector databases
+
 ## Project Structure
 
 ```
 app/
 ├── core/              # Core interfaces and abstractions
-├── document_processing/ # Document loading and chunking
-├── embedding/         # Embedding models
-├── vectordb/         # Vector database integration
-├── retrieval/         # Retrieval mechanisms
-├── llm/               # LLM integration
-├── agents/            # Agent system
-├── api/               # API endpoints
-├── ui/                # User interface
+│   ├── loaders/       # Document loaders for different formats
+│   └── chunking/      # Text chunking strategies
+├── embedding/         # Embedding models (coming soon)
+├── vectordb/         # Vector database integration (coming soon)
+├── retrieval/         # Retrieval mechanisms (coming soon)
+├── llm/               # LLM integration (coming soon)
+├── agents/            # Agent system (coming soon)
+├── api/               # API endpoints (coming soon)
+├── ui/                # User interface (coming soon)
 ├── utils/             # Utility functions
-├── evaluation/        # Evaluation metrics
+├── evaluation/        # Evaluation metrics (coming soon)
 └── config/            # Configuration management
 ```
 
@@ -59,10 +90,9 @@ app/
    pip install -r requirements.txt
    ```
 
-4. Create a `.env` file by copying `.env.sample` and filling in your API keys:
+4. For development installation:
    ```
-   cp .env.sample .env
-   # Edit the .env file with your API keys
+   pip install -e .
    ```
 
 ## Usage
@@ -75,9 +105,15 @@ To ingest documents into the system:
 python main.py ingest --source /path/to/documents --recursive
 ```
 
+Available options:
+- `--recursive`: Process subdirectories recursively
+- `--chunk-size`: Specify custom chunk size (default: 1000)
+- `--chunk-overlap`: Specify custom chunk overlap (default: 200)
+- `--splitter`: Choose chunking strategy (RecursiveSemanticSplitter, SemanticTextSplitter, CharacterTextSplitter)
+
 ### Querying the System
 
-To query the system:
+To query the system (coming soon):
 
 ```
 python main.py query --query "Your question here"
@@ -85,7 +121,7 @@ python main.py query --query "Your question here"
 
 ### Running the Server
 
-To start the API server:
+To start the API server (coming soon):
 
 ```
 python main.py server --host 0.0.0.0 --port 8000
@@ -96,13 +132,20 @@ python main.py server --host 0.0.0.0 --port 8000
 ### Running Tests
 
 ```
-pytest tests/
+# Run all tests
+pytest
+
+# Run tests with coverage
+pytest --cov=app
+
+# Run specific test files
+pytest tests/unit/test_document_processor.py
 ```
 
 ### Adding New Components
 
 1. Implement the appropriate interface from `app/core/interfaces.py`
-2. Register the component in the dependency injection system
+2. Register the component in the appropriate registry
 3. Add configuration options to `app/config/settings.py` if needed
 
 ## License
