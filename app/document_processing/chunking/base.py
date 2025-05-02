@@ -6,7 +6,6 @@ for splitting documents into smaller chunks for embedding and retrieval.
 """
 import re
 import uuid
-from abc import ABC, abstractmethod
 from typing import List, Dict, Optional, Any, Set, Callable, Union
 
 from app.core.interfaces import TextSplitter, RagDocument, DocumentMetadata
@@ -37,7 +36,6 @@ class BaseTextSplitter(TextSplitter):
         self.add_start_index = add_start_index
         self.strip_whitespace = strip_whitespace
     
-    @abstractmethod
     def split_text(self, text: str) -> List[str]:
         """
         Split text into chunks.
@@ -48,7 +46,7 @@ class BaseTextSplitter(TextSplitter):
         Returns:
             List of text chunks.
         """
-        pass
+        raise NotImplementedError("Subclasses must implement split_text")
     
     def split_documents(self, documents: List[RagDocument]) -> List[RagDocument]:
         """
@@ -68,7 +66,7 @@ class BaseTextSplitter(TextSplitter):
             
             for i, chunk_text in enumerate(chunks):
                 # Create metadata for the chunk
-                chunk_metadata = doc.metadata.copy()
+                chunk_metadata = doc.metadata.copy() if doc.metadata else {}
                 
                 # Add chunk information to metadata
                 chunk_metadata["chunk_index"] = i

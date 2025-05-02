@@ -7,6 +7,7 @@ ingesting and processing documents for RAG.
 
 from app.document_processing.loaders import (
     BaseDocumentLoader,
+    DocumentLoaderRegistry,
     document_loader_registry,
     TextDocumentLoader,
     PDFDocumentLoader,
@@ -17,6 +18,7 @@ from app.document_processing.loaders import (
 
 from app.document_processing.chunking import (
     BaseTextSplitter,
+    TextSplitterRegistry,
     text_splitter_registry,
     CharacterTextSplitter,
     SemanticTextSplitter,
@@ -26,6 +28,7 @@ from app.document_processing.chunking import (
 __all__ = [
     # Document loaders
     'BaseDocumentLoader',
+    'DocumentLoaderRegistry',
     'document_loader_registry',
     'TextDocumentLoader',
     'PDFDocumentLoader',
@@ -35,6 +38,7 @@ __all__ = [
     
     # Text splitters
     'BaseTextSplitter',
+    'TextSplitterRegistry',
     'text_splitter_registry',
     'CharacterTextSplitter',
     'SemanticTextSplitter',

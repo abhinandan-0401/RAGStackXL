@@ -5,9 +5,8 @@ This module provides a document processor that handles the entire
 pipeline of loading, preprocessing, and chunking documents.
 """
 import os
-from typing import List, Optional, Dict, Any, Union
 from pathlib import Path
-import uuid
+from typing import List, Optional, Dict, Any, Union
 
 from app.core.interfaces import RagDocument, Event, EventType, event_bus
 from app.document_processing.loaders import document_loader_registry, BaseDocumentLoader
