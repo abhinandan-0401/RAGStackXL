@@ -55,9 +55,21 @@ ragstackxl/
 logs/
 data/
 *.log 
+vectorstore/
+benchmark_results/
+
+# ML model caches
+.sentence_transformers/
+.cache/
+.fastembed_cache/
 
 # Other files
 *.pdf
 *.docx
 *.doc
 *.csv
+*.json
+!package.json
+
+# Temporary files
+rag_output.log

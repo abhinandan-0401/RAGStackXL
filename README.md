@@ -55,9 +55,23 @@ Key features:
 - Added comprehensive benchmarking tools for provider comparisons
 - Integrated with the event bus system for notifications
 
+#### Phase 4: Embedding Models ✓
+- Designed a clean embedding model abstraction and interface
+- Implemented multiple embedding model providers:
+  - SentenceTransformers (SBERT)
+  - FastEmbed (lightweight, efficient embeddings)
+  - OpenAI (API-based embeddings)
+  - HuggingFace (transformer-based models)
+  - Cohere (specialized for retrieval)
+- Created factory pattern for embedding model instantiation
+- Added async support for non-blocking operations
+- Built comprehensive benchmarking tools for model comparison
+- Integrated with vector database layer for complete RAG pipeline
+- Developed example scripts for usage and testing
+
 ### In Progress:
-- Phase 4: Embedding Models
-- Building embedding model abstraction and integrating models
+- Phase 5: Retrieval Mechanisms
+- Building advanced retrieval strategies for optimal document retrieval
 
 ## Project Structure
 
@@ -75,7 +89,14 @@ app/
 │   ├── weaviate.py    # Weaviate implementation
 │   ├── pinecone.py    # Pinecone implementation
 │   └── milvus.py      # Milvus implementation
-├── embedding/         # Embedding models (coming soon)
+├── embedding/         # Embedding model implementations
+│   ├── interfaces.py  # Embedding model abstract interfaces
+│   ├── factory.py     # Factory for creating embedding models
+│   ├── sbert.py       # SentenceTransformers implementation
+│   ├── fastembed.py   # FastEmbed implementation
+│   ├── openai.py      # OpenAI API implementation
+│   ├── huggingface.py # HuggingFace implementation
+│   └── cohere.py      # Cohere implementation
 ├── retrieval/         # Retrieval mechanisms (coming soon)
 ├── llm/               # LLM integration (coming soon)
 ├── agents/            # Agent system (coming soon)
@@ -135,6 +156,8 @@ Available options:
 - `--db-provider`: Choose vector database provider (faiss, faiss_advanced, qdrant, weaviate, pinecone, milvus)
 - `--db-collection`: Specify collection name
 - `--db-metric`: Choose distance metric (cosine, euclidean, dot)
+- `--embedding-model`: Choose embedding model (sbert, fastembed, openai, huggingface, cohere)
+- `--model-name`: Specify model name for the chosen embedding model
 
 ### Querying the System
 
@@ -148,6 +171,7 @@ Available options:
 - `--k`: Number of results to return (default: 4)
 - `--filter`: Filter query in JSON format (e.g., '{"category":"science"}')
 - `--db-provider`: Choose vector database provider for retrieval
+- `--embedding-model`: Choose embedding model for query embedding
 
 ### Running the Server
 
@@ -167,6 +191,21 @@ python main.py db clear --db-provider faiss
 
 # Get database statistics
 python main.py db stats --db-provider faiss
+```
+
+## Examples
+
+RAGStackXL includes example scripts in the `examples/` directory to demonstrate various components:
+
+```
+# Test embedding models
+python examples/embedding_examples.py
+
+# Run a complete RAG workflow example
+python examples/rag_with_embeddings.py
+
+# Benchmark embedding models
+python examples/benchmark_embeddings.py
 ```
 
 ## Vector Database Benchmarking
@@ -192,6 +231,7 @@ pytest --cov=app
 
 # Run specific test files
 pytest tests/unit/vectordb/test_faiss.py
+pytest tests/unit/embedding/test_embedding_models.py
 ```
 
 ### Adding New Components
@@ -205,6 +245,7 @@ pytest tests/unit/vectordb/test_faiss.py
 For more detailed documentation, see:
 
 - [Vector Database Guide](docs/vector_databases.md)
+- [Embedding Models Guide](docs/embedding_models.md)
 
 ## License
 
