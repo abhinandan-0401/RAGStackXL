@@ -2,7 +2,7 @@
 Application settings.
 """
 import os
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from pydantic_settings import BaseSettings
 from dataclasses import dataclass
 from pydantic import field_validator
@@ -21,9 +21,51 @@ class ApiSettings(BaseSettings):
     PORT: int = 8000
 
 
+class FaissSettings(BaseSettings):
+    """FAISS vector database settings."""
+    # No special settings for FAISS
+    pass
+
+
+class QdrantSettings(BaseSettings):
+    """Qdrant vector database settings."""
+    URL: Optional[str] = None
+    API_KEY: Optional[str] = None
+    PREFER_GRPC: bool = True
+
+
+class WeaviateSettings(BaseSettings):
+    """Weaviate vector database settings."""
+    URL: str = "http://localhost:8080"
+    API_KEY: Optional[str] = None
+
+
+class PineconeSettings(BaseSettings):
+    """Pinecone vector database settings."""
+    API_KEY: Optional[str] = None
+    ENVIRONMENT: str = "us-west1-gcp"
+
+
+class MilvusSettings(BaseSettings):
+    """Milvus vector database settings."""
+    URI: str = "http://localhost:19530"
+    TOKEN: Optional[str] = None
+
+
 class VectorDbSettings(BaseSettings):
     """Vector database settings."""
+    PROVIDER: str = "faiss"  # Default provider
+    COLLECTION_NAME: str = "documents"
+    EMBEDDING_DIMENSION: int = 1536  # Default for OpenAI embeddings
+    DISTANCE_METRIC: str = "cosine"
     PERSIST_DIRECTORY: str = "vectorstore"
+    
+    # Provider-specific settings
+    FAISS: FaissSettings = FaissSettings()
+    QDRANT: QdrantSettings = QdrantSettings()
+    WEAVIATE: WeaviateSettings = WeaviateSettings()
+    PINECONE: PineconeSettings = PineconeSettings()
+    MILVUS: MilvusSettings = MilvusSettings()
 
 
 class Settings(BaseSettings):

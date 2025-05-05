@@ -40,6 +40,7 @@ coverage.xml
 venv/
 env/
 ENV/
+ragstackxl/
 
 # Environment variables
 .env

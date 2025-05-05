@@ -41,9 +41,23 @@ Key features:
 - Built a unified document processor combining loading and chunking
 - Added comprehensive unit tests with good coverage
 
+#### Phase 3: Vector Database ✓
+- Designed a flexible abstraction layer for vector databases
+- Implemented multiple vector database providers:
+  - FAISS (local, fast vector search)
+  - FAISS Advanced (with optimized indices: HNSW, IVF, PQ)
+  - Qdrant (balanced performance with rich filtering)
+  - Weaviate (hybrid search capabilities)
+  - Pinecone (managed service)
+  - Milvus (high-scale distributed)
+- Created advanced filtering capabilities with complex operators
+- Implemented efficient batch operations and persistence
+- Added comprehensive benchmarking tools for provider comparisons
+- Integrated with the event bus system for notifications
+
 ### In Progress:
-- Phase 3: Embedding and Vectorization
-- Implementing embedding models and vector databases
+- Phase 4: Embedding Models
+- Building embedding model abstraction and integrating models
 
 ## Project Structure
 
@@ -52,8 +66,16 @@ app/
 ├── core/              # Core interfaces and abstractions
 │   ├── loaders/       # Document loaders for different formats
 │   └── chunking/      # Text chunking strategies
+├── vectordb/          # Vector database implementations
+│   ├── interfaces.py  # Vector database abstract interfaces
+│   ├── factory.py     # Factory for creating vector database instances
+│   ├── faiss.py       # FAISS implementation
+│   ├── faiss_advanced.py # Advanced FAISS with optimized indices
+│   ├── qdrant.py      # Qdrant implementation
+│   ├── weaviate.py    # Weaviate implementation
+│   ├── pinecone.py    # Pinecone implementation
+│   └── milvus.py      # Milvus implementation
 ├── embedding/         # Embedding models (coming soon)
-├── vectordb/         # Vector database integration (coming soon)
 ├── retrieval/         # Retrieval mechanisms (coming soon)
 ├── llm/               # LLM integration (coming soon)
 ├── agents/            # Agent system (coming soon)
@@ -110,14 +132,22 @@ Available options:
 - `--chunk-size`: Specify custom chunk size (default: 1000)
 - `--chunk-overlap`: Specify custom chunk overlap (default: 200)
 - `--splitter`: Choose chunking strategy (RecursiveSemanticSplitter, SemanticTextSplitter, CharacterTextSplitter)
+- `--db-provider`: Choose vector database provider (faiss, faiss_advanced, qdrant, weaviate, pinecone, milvus)
+- `--db-collection`: Specify collection name
+- `--db-metric`: Choose distance metric (cosine, euclidean, dot)
 
 ### Querying the System
 
-To query the system (coming soon):
+To query the system:
 
 ```
-python main.py query --query "Your question here"
+python main.py query --query "Your question here" --k 4
 ```
+
+Available options:
+- `--k`: Number of results to return (default: 4)
+- `--filter`: Filter query in JSON format (e.g., '{"category":"science"}')
+- `--db-provider`: Choose vector database provider for retrieval
 
 ### Running the Server
 
@@ -126,6 +156,28 @@ To start the API server (coming soon):
 ```
 python main.py server --host 0.0.0.0 --port 8000
 ```
+
+### Database Management
+
+To manage the vector database:
+
+```
+# Clear the database
+python main.py db clear --db-provider faiss
+
+# Get database statistics
+python main.py db stats --db-provider faiss
+```
+
+## Vector Database Benchmarking
+
+To benchmark different vector database providers:
+
+```
+python -m tests.benchmark.vectordb_benchmark --providers faiss faiss_advanced --dimensions 384 768 --collection-sizes 1000 10000
+```
+
+This will generate performance metrics and plots in the `benchmark_results` directory.
 
 ## Development
 
@@ -139,7 +191,7 @@ pytest
 pytest --cov=app
 
 # Run specific test files
-pytest tests/unit/test_document_processor.py
+pytest tests/unit/vectordb/test_faiss.py
 ```
 
 ### Adding New Components
@@ -147,6 +199,12 @@ pytest tests/unit/test_document_processor.py
 1. Implement the appropriate interface from `app/core/interfaces.py`
 2. Register the component in the appropriate registry
 3. Add configuration options to `app/config/settings.py` if needed
+
+## Documentation
+
+For more detailed documentation, see:
+
+- [Vector Database Guide](docs/vector_databases.md)
 
 ## License
 
