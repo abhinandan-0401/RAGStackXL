@@ -68,6 +68,56 @@ class VectorDbSettings(BaseSettings):
     MILVUS: MilvusSettings = MilvusSettings()
 
 
+class OpenAIEmbeddingSettings(BaseSettings):
+    """OpenAI embedding settings."""
+    API_KEY: Optional[str] = None
+    API_BASE: Optional[str] = None
+    API_VERSION: Optional[str] = None
+    TIMEOUT: int = 60
+
+
+class SBERTEmbeddingSettings(BaseSettings):
+    """SBERT embedding settings."""
+    DEVICE: str = "cpu"
+    BATCH_SIZE: int = 32
+    SHOW_PROGRESS_BAR: bool = False
+
+
+class HuggingFaceEmbeddingSettings(BaseSettings):
+    """HuggingFace embedding settings."""
+    TOKEN: Optional[str] = None
+    REVISION: str = "main"
+    DEVICE: str = "cpu"
+
+
+class CohereEmbeddingSettings(BaseSettings):
+    """Cohere embedding settings."""
+    API_KEY: Optional[str] = None
+    TIMEOUT: int = 60
+
+
+class FastEmbedEmbeddingSettings(BaseSettings):
+    """FastEmbed embedding settings."""
+    CACHE_DIR: Optional[str] = None
+    THREADS: int = 4
+    BATCH_SIZE: int = 32
+
+
+class EmbeddingSettings(BaseSettings):
+    """Embedding settings."""
+    MODEL_TYPE: str = "fastembed"  # Default to fastembed as it requires no API keys
+    MODEL_NAME: str = "default"  # Model name (specific to each provider)
+    DIMENSION: int = 768  # Default embedding dimension
+    NORMALIZE: bool = True  # Whether to normalize embedding vectors
+    
+    # Provider-specific settings
+    OPENAI: OpenAIEmbeddingSettings = OpenAIEmbeddingSettings()
+    SBERT: SBERTEmbeddingSettings = SBERTEmbeddingSettings()
+    HUGGINGFACE: HuggingFaceEmbeddingSettings = HuggingFaceEmbeddingSettings()
+    COHERE: CohereEmbeddingSettings = CohereEmbeddingSettings()
+    FASTEMBED: FastEmbedEmbeddingSettings = FastEmbedEmbeddingSettings()
+
+
 class Settings(BaseSettings):
     """Application settings."""
     PROJECT_NAME: str = "RAGStackXL"
@@ -79,6 +129,7 @@ class Settings(BaseSettings):
     DOCUMENT: DocumentSettings = DocumentSettings()
     API: ApiSettings = ApiSettings()
     VECTORDB: VectorDbSettings = VectorDbSettings()
+    EMBEDDING: EmbeddingSettings = EmbeddingSettings()
     
     @field_validator("ENVIRONMENT")
     def validate_environment(cls, v: str) -> str:
