@@ -12,6 +12,16 @@ from app.config.settings import settings
 from app.utils.logging import log
 from app.vectordb.interfaces import VectorDB, VectorDBConfig, VectorDBProvider, VectorDBFactory
 
+# Register vector database implementations
+from app.vectordb.faiss import FaissVectorDB
+from app.vectordb.qdrant import QdrantVectorDB
+# from app.vectordb.weaviate import WeaviateVectorDB  # Temporarily commented out
+
+# Register with the factory
+VectorDBFactory.register(VectorDBProvider.FAISS, FaissVectorDB)
+VectorDBFactory.register(VectorDBProvider.QDRANT, QdrantVectorDB)
+# VectorDBFactory.register(VectorDBProvider.WEAVIATE, WeaviateVectorDB)  # Temporarily commented out
+
 
 def create_vectordb(
     provider: Optional[str] = None,

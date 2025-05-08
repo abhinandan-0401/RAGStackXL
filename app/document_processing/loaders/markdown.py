@@ -5,7 +5,7 @@ This module provides a document loader for Markdown files.
 """
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import uuid
 import re
 
@@ -30,7 +30,7 @@ class MarkdownDocumentLoader(BaseDocumentLoader):
         self.extract_code_blocks = extract_code_blocks
         self.extract_frontmatter = extract_frontmatter
     
-    def _extract_frontmatter(self, content: str) -> tuple[str, dict]:
+    def _extract_frontmatter(self, content: str) -> Tuple[str, dict]:
         """
         Extract YAML frontmatter from Markdown content.
         

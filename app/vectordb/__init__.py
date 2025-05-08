@@ -42,7 +42,7 @@ from app.vectordb.interfaces import (
 # Import specific implementations
 from app.vectordb.faiss import FaissVectorDB
 from app.vectordb.qdrant import QdrantVectorDB
-from app.vectordb.weaviate import WeaviateVectorDB
+# from app.vectordb.weaviate import WeaviateVectorDB  # Temporarily commented out
 # from app.vectordb.pinecone import PineconeVectorDB
 # from app.vectordb.milvus import MilvusVectorDB
 
@@ -63,7 +63,7 @@ __all__ = [
     # Implementations
     "FaissVectorDB",
     "QdrantVectorDB",
-    "WeaviateVectorDB",
+    # "WeaviateVectorDB",  # Temporarily commented out
     # "PineconeVectorDB",
     # "MilvusVectorDB",
     

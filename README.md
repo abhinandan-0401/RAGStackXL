@@ -69,9 +69,25 @@ Key features:
 - Integrated with vector database layer for complete RAG pipeline
 - Developed example scripts for usage and testing
 
+#### Phase 5: Retrieval Mechanisms ✓
+- Designed flexible retriever interfaces and abstractions
+- Implemented multiple retrieval strategies:
+  - Basic retriever (simple vector similarity)
+  - Semantic retriever (with keyword boosting)
+  - Hybrid retriever (combining vector and keyword search)
+  - MMR retriever (Maximum Marginal Relevance for diversity)
+  - Query expansion retriever (with multiple query reformulations)
+  - Reranking retriever (two-stage retrieval with advanced scoring)
+  - Contextual retriever (considers conversation history)
+- Created query reformulation strategies for enhanced retrieval
+- Implemented reranker modules for post-retrieval refinement
+- Added async support for efficient parallel processing
+- Developed comprehensive example script and unit tests
+- Integrated with the event bus system for retrieval events
+
 ### In Progress:
-- Phase 5: Retrieval Mechanisms
-- Building advanced retrieval strategies for optimal document retrieval
+- Phase 6: LLM Integration
+- Integrating various Language Models for text generation and reasoning
 
 ## Project Structure
 
@@ -97,7 +113,15 @@ app/
 │   ├── openai.py      # OpenAI API implementation
 │   ├── huggingface.py # HuggingFace implementation
 │   └── cohere.py      # Cohere implementation
-├── retrieval/         # Retrieval mechanisms (coming soon)
+├── retrieval/         # Retrieval mechanisms
+│   ├── interfaces.py  # Retriever abstract interfaces
+│   ├── basic.py       # Basic vector similarity retriever
+│   ├── semantic.py    # Semantic retriever with query understanding
+│   ├── hybrid.py      # Hybrid vector + keyword retriever
+│   ├── mmr.py         # Maximum Marginal Relevance retriever
+│   ├── query_expansion.py # Query expansion retriever
+│   ├── reranking.py   # Two-stage retrieval with reranking
+│   └── contextual.py  # Context-aware retriever
 ├── llm/               # LLM integration (coming soon)
 ├── agents/            # Agent system (coming soon)
 ├── api/               # API endpoints (coming soon)
@@ -172,6 +196,8 @@ Available options:
 - `--filter`: Filter query in JSON format (e.g., '{"category":"science"}')
 - `--db-provider`: Choose vector database provider for retrieval
 - `--embedding-model`: Choose embedding model for query embedding
+- `--retriever`: Choose retrieval mechanism (basic, semantic, hybrid, mmr, query_expansion, reranking, contextual)
+- `--retriever-options`: Retriever-specific options in JSON format
 
 ### Running the Server
 
@@ -204,6 +230,9 @@ python examples/embedding_examples.py
 # Run a complete RAG workflow example
 python examples/rag_with_embeddings.py
 
+# Test different retrieval mechanisms
+python examples/retrieval_examples.py
+
 # Benchmark embedding models
 python examples/benchmark_embeddings.py
 ```
@@ -232,6 +261,7 @@ pytest --cov=app
 # Run specific test files
 pytest tests/unit/vectordb/test_faiss.py
 pytest tests/unit/embedding/test_embedding_models.py
+pytest tests/unit/retrieval/test_basic_retriever.py
 ```
 
 ### Adding New Components
@@ -246,6 +276,7 @@ For more detailed documentation, see:
 
 - [Vector Database Guide](docs/vector_databases.md)
 - [Embedding Models Guide](docs/embedding_models.md)
+- [Retrieval Mechanisms Guide](docs/retrieval_mechanisms.md)
 
 ## License
 
