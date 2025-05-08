@@ -23,6 +23,7 @@ class EventType(Enum):
     QUERY_EXECUTED = "query_executed"
     QUERY_RECEIVED = "query_received"
     GENERATION_COMPLETED = "generation_completed"
+    LLM_GENERATED = "llm_generated"
     ERROR = "error"
 
 
